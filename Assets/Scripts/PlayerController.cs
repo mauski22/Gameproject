@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isGameOver && Input.GetMouseButtonDown(0))
         {
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("1");
         }
     }
 }
