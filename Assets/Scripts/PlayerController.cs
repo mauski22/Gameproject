@@ -15,7 +15,12 @@ public class PlayerController : MonoBehaviour
     private float movementX;
     private float movementY;
     public GameObject winTextObject;
-    private bool isGameOver = false;
+    private bool gameStarted = false;
+    public event System.Action OnGameStart;
+    public bool GameStarted
+    {
+        get { return gameStarted; }
+    }
 
 
     void Start()
@@ -27,6 +32,11 @@ public class PlayerController : MonoBehaviour
     }
     void OnMove (InputValue movementValue)
     {
+        if (!gameStarted)
+        {
+        gameStarted = true;
+        OnGameStart?.Invoke(); // Trigger the event
+        }
         Vector2 movementVector = movementValue.Get<Vector2>();
 
         movementX = movementVector.x;
@@ -55,22 +65,22 @@ public class PlayerController : MonoBehaviour
                 }
         }
     }
+    private IEnumerator RestartGameAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("MiniGame");
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Destroy the current object
-            Destroy(gameObject); 
-            // Update the winText to display "You Lose!"
+            GetComponent<Renderer>().enabled = false;
+            GetComponent<Collider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = true;
             winTextObject.gameObject.SetActive(true);
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
-        }
-    }
-    void Update()
-    {
-        if (isGameOver && Input.GetMouseButtonDown(0))
-        {
-            SceneManager.LoadScene("1");
+            StartCoroutine(RestartGameAfterDelay(1.0f));
+        
         }
     }
 }
