@@ -50,19 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         if (gameStarted)
         {
-            // Get the camera's forward and right directions
-            Vector3 forward = Camera.main.transform.forward;
-            Vector3 right = Camera.main.transform.right;
-
-            // Project forward and right directions onto the horizontal plane (y = 0)
-            forward.y = 0;
-            right.y = 0;
-            forward.Normalize();
-            right.Normalize();
-
-            // Calculate the movement direction based on camera orientation
-            Vector3 movement = forward * movementY + right * movementX;
-
+            Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
             rb.AddForce(movement * speed);
         }
     }
