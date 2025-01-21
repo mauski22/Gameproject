@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PlayerController : MonoBehaviour
     private float movementX;
     private float movementY;
     public GameObject winTextObject;
+    private bool isGameOver = false;
+
 
     void Start()
     {
@@ -61,6 +64,13 @@ public class PlayerController : MonoBehaviour
             // Update the winText to display "You Lose!"
             winTextObject.gameObject.SetActive(true);
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+        }
+    }
+    void Update()
+    {
+        if (isGameOver && Input.GetMouseButtonDown(0))
+        {
+            SceneManager.LoadScene("1");
         }
     }
 }
