@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
         if (!gameStarted)
         {
         gameStarted = true;
-        OnGameStart?.Invoke(); // Trigger the event
+        OnGameStart?.Invoke();
         }
         Vector2 movementVector = movementValue.Get<Vector2>();
 
@@ -48,8 +48,11 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
-        rb.AddForce(movement * speed);
+        if (gameStarted)
+        {
+            Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
+            rb.AddForce(movement * speed);
+        }
     }
     void OnTriggerEnter(Collider other)
     {

@@ -9,24 +9,31 @@ public class EnemyMovement : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private PlayerController playerController;
     private bool isChasing = false;
+    public float updateInterval = 2f;
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         if (player != null)
         {
             playerController = player.GetComponent<PlayerController>();
+            playerController.OnGameStart += StartChasing;
         }
+    
     }
-    void Update()
+    void StartChasing()
     {
-        if (player != null && playerController != null && playerController.GameStarted && !isChasing)
+        isChasing = true;
+        StartCoroutine(UpdatePlayerPosition());
+    }
+    private IEnumerator UpdatePlayerPosition()
+    {
+        while(isChasing)
         {
-            isChasing = true;
-        }
-
-        if (isChasing)
-        {
-            navMeshAgent.SetDestination(player.position);
+            if(player != null)
+            {
+                navMeshAgent.SetDestination(player.position);
+            }
+            yield return new WaitForSeconds(updateInterval);
         }
     }
 }
