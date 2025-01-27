@@ -21,7 +21,7 @@ public class TurretScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 playerGroundPos = new Vector3(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z);
+        Vector3 playerGroundPos = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.5f, playerTransform.position.z);
 
         //if player is not in range, do nothing
         if (Vector3.Distance(transform.position, playerGroundPos) > turretRange)
